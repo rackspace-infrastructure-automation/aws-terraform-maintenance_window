@@ -22,7 +22,7 @@ module "maint_window_target" {
 | duration | The schedule of the Maintenance Window in the form of a cron or rate expression. | string | `1` | no |
 | name | The name of the Maintenance Window. Must contain only letters, numbers, periods (.), underscores (_), backslashes (\), and dashes (-) | string | `Maintenance-Window` | no |
 | owner_information | A user-provided value to include in any events in CloudWatch Events that are raised while running tasks for these targets in this Maintenance Window. | string | `Maintenance Window Task` | no |
-| resource_type | The type of target that's being registered with the Maintenance Window. | string | `INSTANCE` | no |
+| resource_type | The type of target that's being registered with the Maintenance Window. Currently, "INSTANCE" is the only supported resource type. | string | `INSTANCE` | no |
 | schedule | The schedule of the Maintenance Window in the form of a cron or rate expression. https://docs.aws.amazon.com/lambda/latest/dg/tutorial-scheduled-events-schedule-expressions.html | string | - | yes |
 | target_key | The Maintenance Window Target ID from the maintenance window target template or InstanceIds | string | - | yes |
 | target_values | List of Physical Maintenance Window Target IDs or Instance IDs. | list | - | yes |

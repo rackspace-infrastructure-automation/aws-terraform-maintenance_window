@@ -29,7 +29,7 @@ variable "owner_information" {
 }
 
 variable "resource_type" {
-  description = "The type of target that's being registered with the Maintenance Window."
+  description = "The type of target that's being registered with the Maintenance Window. Currently, \"INSTANCE\" is the only supported resource type."
   default     = "INSTANCE"
   type        = "string"
 }

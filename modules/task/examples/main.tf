@@ -16,6 +16,7 @@ module "vpc" {
 }
 
 data "aws_region" "current_region" {}
+data "aws_caller_identity" "current_account" {}
 
 data "aws_ami" "amazon_centos_7" {
   most_recent = true
@@ -61,10 +62,60 @@ module "maint_window_target" {
   target_values              = ["${module.ar_test.ar_instance_id_list}"]
 }
 
+module "maintenance_window_task_1" {
+  source           = "git@github.com:rackspace-infrastructure-automation/aws-terraform-maintenance_window//modules/task?ref=v0.0.1"
+  max_errors       = "1"
+  service_role_arn = "arn:aws:iam::${data.aws_caller_identity.current_account.account_id}:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM"
+  priority         = "0"
+  task_type        = "RUN_COMMAND"
+  task_arn         = "arn:aws:ssm:${data.aws_region.current_region.name}:507897595701:document/Rack-ConfigureAWSTimeSync"
+  window_id        = "${module.maint_window_target.maintenance_window_id}"
+  max_concurrency  = "5"
+  target_key       = "WindowTargetIds"
+  target_values    = ["${module.maint_window_target.maintenance_window_target_id}"]
+
+  task_parameters = [{
+    name   = "PreferredTimeClient"
+    values = ["chrony"]
+  }]
+
+  enable_s3_logging = true
+  s3_bucket_name    = "${module.s3_logging.bucket_id}"
+  s3_region         = "${module.s3_logging.bucket_region}"
+}
+
+module "maintenance_window_task_2" {
+  source           = "git@github.com:rackspace-infrastructure-automation/aws-terraform-maintenance_window//modules/task?ref=v0.0.1"
+  max_errors       = "1"
+  service_role_arn = "arn:aws:iam::${data.aws_caller_identity.current_account.account_id}:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM"
+  priority         = "0"
+  task_type        = "RUN_COMMAND"
+  task_arn         = "arn:aws:ssm:${data.aws_region.current_region.name}:507897595701:document/Rack-Install_Package"
+  window_id        = "${module.maint_window_target.maintenance_window_id}"
+  max_concurrency  = "5"
+  target_key       = "WindowTargetIds"
+  target_values    = ["${module.maint_window_target.maintenance_window_target_id}"]
+
+  task_parameters = [{
+    name   = "Packages"
+    values = ["bind bind-utils"]
+  }]
+
+  enable_s3_logging = false
+}
+
 output "maintenance_window_target_id" {
   value = "${module.maint_window_target.maintenance_window_target_id}"
 }
 
 output "maintenance_window_id" {
   value = "${module.maint_window_target.maintenance_window_id}"
+}
+
+output "maintenance_window_task_1_id" {
+  value = "${module.maintenance_window_task_1.maintenance_window_task_id}"
+}
+
+output "maintenance_window_task_2_id" {
+  value = "${module.maintenance_window_task_2.maintenance_window_task_id}"
 }

@@ -54,13 +54,11 @@ variable "task_parameters" {
 
 variable "target_key" {
   description = "The Maintenance Window Target ID from the maintenance window target template or InstanceIds"
-  default     = ""
   type        = "string"
 }
 
 variable "target_values" {
   description = "Comma delimited list of Physical Maintenance Window Target IDs or Instance IDs."
-  default     = []
   type        = "list"
 }
 
@@ -77,6 +75,5 @@ variable "task_type" {
 
 variable "window_id" {
   description = "The ID of the Maintenance Window where the task is registered. Format mw-xxxxxxxxxxxx"
-  default     = ""
   type        = "string"
 }
