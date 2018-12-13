@@ -4,6 +4,11 @@ variable "enable_s3_logging" {
   type        = "string"
 }
 
+variable "maintenance_window_description" {
+  description = "Description for maintenance window"
+  type        = "string"
+}
+
 variable "max_concurrency" {
   description = "The maximum number of targets that you can run this task for, in parallel."
   default     = 5
@@ -19,6 +24,11 @@ variable "max_errors" {
 variable "priority" {
   description = "The priority of the task in the Maintenance Window. The lower the number, the higher the priority. Tasks that have the same priority are scheduled in parallel."
   default     = 0
+  type        = "string"
+}
+
+variable "resource_name" {
+  description = "Name to be used for the resources to be provisioned"
   type        = "string"
 }
 
