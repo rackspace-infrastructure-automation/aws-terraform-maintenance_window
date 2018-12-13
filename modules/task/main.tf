@@ -1,5 +1,7 @@
 resource "aws_ssm_maintenance_window_task" "maintenance_window_task_with_logging" {
   count            = "${var.enable_s3_logging ? 1 : 0}"
+  name             = "${var.resource_name}"
+  description      = "${var.maintenance_window_description}"
   max_errors       = "${var.max_errors}"
   service_role_arn = "${var.service_role_arn}"
   priority         = "${var.priority}"
@@ -24,6 +26,8 @@ resource "aws_ssm_maintenance_window_task" "maintenance_window_task_with_logging
 
 resource "aws_ssm_maintenance_window_task" "maintenance_window_task_no_logging" {
   count            = "${var.enable_s3_logging ? 0 : 1}"
+  name             = "${var.resource_name}"
+  description      = "${var.maintenance_window_description}"
   max_errors       = "${var.max_errors}"
   service_role_arn = "${var.service_role_arn}"
   priority         = "${var.priority}"
