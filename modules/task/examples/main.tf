@@ -103,19 +103,3 @@ module "maintenance_window_task_2" {
 
   enable_s3_logging = false
 }
-
-output "maintenance_window_target_id" {
-  value = "${module.maint_window_target.maintenance_window_target_id}"
-}
-
-output "maintenance_window_id" {
-  value = "${module.maint_window_target.maintenance_window_id}"
-}
-
-output "maintenance_window_task_1_id" {
-  value = "${module.maintenance_window_task_1.maintenance_window_task_id}"
-}
-
-output "maintenance_window_task_2_id" {
-  value = "${module.maintenance_window_task_2.maintenance_window_task_id}"
-}
