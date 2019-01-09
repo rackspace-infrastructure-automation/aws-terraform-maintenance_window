@@ -60,11 +60,3 @@ module "maint_window_target" {
   target_key                 = "InstanceIds"
   target_values              = ["${module.ar_test.ar_instance_id_list}"]
 }
-
-output "maintenance_window_target_id" {
-  value = "${module.maint_window_target.maintenance_window_target_id}"
-}
-
-output "maintenance_window_id" {
-  value = "${module.maint_window_target.maintenance_window_id}"
-}
