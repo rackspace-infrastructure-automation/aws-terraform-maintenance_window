@@ -23,6 +23,14 @@ module "maint_window_target" {
 * Full working references are available at [examples](examples)
 */
 
+terraform {
+  required_version = ">= 0.12"
+
+  required_providers {
+    aws = ">= 2.1.0"
+  }
+}
+
 resource "aws_ssm_maintenance_window" "maintenance_window" {
   cutoff                     = var.cutoff
   duration                   = var.duration
@@ -42,4 +50,3 @@ resource "aws_ssm_maintenance_window_target" "maintenance_window_target" {
 
   window_id = aws_ssm_maintenance_window.maintenance_window.id
 }
-

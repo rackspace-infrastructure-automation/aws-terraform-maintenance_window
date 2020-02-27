@@ -32,6 +32,14 @@
 * Full working references are available at [examples](examples)
 */
 
+terraform {
+  required_version = ">= 0.12"
+
+  required_providers {
+    aws = ">= 2.1.0"
+  }
+}
+
 resource "aws_ssm_maintenance_window_task" "maintenance_window_task_with_logging" {
   count            = var.enable_s3_logging ? 1 : 0
   name             = var.resource_name
@@ -99,4 +107,3 @@ resource "aws_ssm_maintenance_window_task" "maintenance_window_task_no_logging" 
     values = var.target_values
   }
 }
-
