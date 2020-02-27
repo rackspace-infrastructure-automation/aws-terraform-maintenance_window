@@ -15,7 +15,8 @@ module "vpc" {
   vpc_name = "MAINT-WINDOW-TEST-${random_string.r_string.result}"
 }
 
-data "aws_region" "current_region" {}
+data "aws_region" "current_region" {
+}
 
 data "aws_ami" "amazon_centos_7" {
   most_recent = true
@@ -31,9 +32,9 @@ module "ar_test" {
   source              = "git@github.com:rackspace-infrastructure-automation/aws-terraform-ec2_autorecovery.git?ref=v0.0.5"
   ec2_os              = "centos7"
   instance_count      = "1"
-  subnets             = ["${element(module.vpc.private_subnets, 0)}"]
-  security_group_list = ["${module.vpc.default_sg}"]
-  image_id            = "${data.aws_ami.amazon_centos_7.image_id}"
+  subnets             = [element(module.vpc.private_subnets, 0)]
+  security_group_list = [module.vpc.default_sg]
+  image_id            = data.aws_ami.amazon_centos_7.image_id
   instance_type       = "t2.micro"
   resource_name       = "MAINT_WINDOW_TEST-${random_string.r_string.result}"
 }
@@ -58,5 +59,6 @@ module "maint_window_target" {
   resource_type              = "INSTANCE"
   owner_information          = "Maintenance Window Task"
   target_key                 = "InstanceIds"
-  target_values              = ["${module.ar_test.ar_instance_id_list}"]
+  target_values              = [module.ar_test.ar_instance_id_list]
 }
+

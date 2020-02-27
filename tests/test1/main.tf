@@ -16,8 +16,11 @@ module "vpc" {
   vpc_name = "MAINT-WINDOW-TEST-${random_string.r_string.result}"
 }
 
-data "aws_region" "current_region" {}
-data "aws_caller_identity" "current_account" {}
+data "aws_region" "current_region" {
+}
+
+data "aws_caller_identity" "current_account" {
+}
 
 data "aws_ami" "amazon_centos_7" {
   most_recent = true
@@ -33,9 +36,9 @@ module "ar_test" {
   source              = "git@github.com:rackspace-infrastructure-automation/aws-terraform-ec2_autorecovery.git?ref=v0.0.5"
   ec2_os              = "centos7"
   instance_count      = "1"
-  subnets             = ["${element(module.vpc.private_subnets, 0)}"]
-  security_group_list = ["${module.vpc.default_sg}"]
-  image_id            = "${data.aws_ami.amazon_centos_7.image_id}"
+  subnets             = [element(module.vpc.private_subnets, 0)]
+  security_group_list = [module.vpc.default_sg]
+  image_id            = data.aws_ami.amazon_centos_7.image_id
   instance_type       = "t2.micro"
   resource_name       = "MAINT_WINDOW_TEST-${random_string.r_string.result}"
 }
@@ -61,7 +64,7 @@ module "maint_window_target" {
   resource_type              = "INSTANCE"
   owner_information          = "Maintenance Window Task"
   target_key                 = "InstanceIds"
-  target_values              = ["${module.ar_test.ar_instance_id_list}"]
+  target_values              = [module.ar_test.ar_instance_id_list]
 }
 
 module "maintenance_window_task_1" {
@@ -73,19 +76,21 @@ module "maintenance_window_task_1" {
   priority                       = "0"
   task_type                      = "RUN_COMMAND"
   task_arn                       = "arn:aws:ssm:${data.aws_region.current_region.name}:507897595701:document/Rack-ConfigureAWSTimeSync"
-  window_id                      = "${module.maint_window_target.maintenance_window_id}"
+  window_id                      = module.maint_window_target.maintenance_window_id
   max_concurrency                = "5"
   target_key                     = "WindowTargetIds"
-  target_values                  = ["${module.maint_window_target.maintenance_window_target_id}"]
+  target_values                  = [module.maint_window_target.maintenance_window_target_id]
 
-  task_parameters = [{
-    name   = "PreferredTimeClient"
-    values = ["chrony"]
-  }]
+  task_parameters = [
+    {
+      name   = "PreferredTimeClient"
+      values = ["chrony"]
+    },
+  ]
 
   enable_s3_logging = true
-  s3_bucket_name    = "${module.s3_logging.bucket_id}"
-  s3_region         = "${module.s3_logging.bucket_region}"
+  s3_bucket_name    = module.s3_logging.bucket_id
+  s3_region         = module.s3_logging.bucket_region
 }
 
 module "maintenance_window_task_2" {
@@ -97,15 +102,17 @@ module "maintenance_window_task_2" {
   priority                       = "0"
   task_type                      = "RUN_COMMAND"
   task_arn                       = "arn:aws:ssm:${data.aws_region.current_region.name}:507897595701:document/Rack-Install_Package"
-  window_id                      = "${module.maint_window_target.maintenance_window_id}"
+  window_id                      = module.maint_window_target.maintenance_window_id
   max_concurrency                = "5"
   target_key                     = "WindowTargetIds"
-  target_values                  = ["${module.maint_window_target.maintenance_window_target_id}"]
+  target_values                  = [module.maint_window_target.maintenance_window_target_id]
 
-  task_parameters = [{
-    name   = "Packages"
-    values = ["bind bind-utils"]
-  }]
+  task_parameters = [
+    {
+      name   = "Packages"
+      values = ["bind bind-utils"]
+    },
+  ]
 
   enable_s3_logging = false
 }
