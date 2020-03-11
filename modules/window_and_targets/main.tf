@@ -7,16 +7,17 @@
  *
  * ```
  * module "maint_window_target" {
- *   source                     = "git@github.com:rackspace-infrastructure-automation/aws-terraform-maintenance_window//modules/window_and_targets?ref=v0.0.1"
- *   cutoff                     = "0"
- *   duration                   = "1"
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-maintenance_window//modules/window_and_targets?ref=v0.12.0"
+ *
+ *   allow_unassociated_targets = false
+ *   cutoff                     = 0
+ *   duration                   = 1
  *   name                       = "Maintenance-Window"
- *   schedule                   = "cron(15 10 ? * MON *)"
- *   allow_unassociated_targets = "False"
- *   resource_type              = "INSTANCE"
  *   owner_information          = "Maintenance Window Task"
+ *   resource_type              = "INSTANCE"
+ *   schedule                   = "cron(15 10 ? * MON *)"
  *   target_key                 = "InstanceIds"
- *   target_values              = ["${module.ar_test.ar_instance_id_list}"]
+ *   target_values              = [module.ar_test.ar_instance_id_list]
  * }
  * ```
  *

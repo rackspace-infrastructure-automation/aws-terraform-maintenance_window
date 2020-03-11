@@ -7,29 +7,43 @@
  *
  * ```
  * module "maintenance_window_task_1" {
- *   source           = "git@github.com:rackspace-infrastructure-automation/aws-terraform-maintenance_window//modules/task?ref=v0.0.1"
- *   max_errors       = "1"
- *   service_role_arn = "arn:aws:iam::794790922771:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM"
- *   priority         = "0"
- *   task_type        = "RUN_COMMAND"
- *   task_arn         = "arn:aws:ssm:${data.aws_region.current_region.name}:507897595701:document/Rack-ConfigureAWSTimeSync"
- *   window_id        = "${module.maint_window_target.maintenance_window_id}"
- *   max_concurrency  = "5"
- *   target_key       = "WindowTargetIds"
- *   target_values    = ["${module.maint_window_target.maintenance_window_target_id}"]
- *
- *   task_parameters = {
- *     name   = "PreferredTimeClient"
- *     values = ["chrony"]
- *   }
+ *   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-maintenance_window//modules/task?ref=v0.12.0"
  *
  *   enable_s3_logging = true
- *   s3_bucket_name    = "${module.s3_logging.bucket_id}"
- *   s3_region         = "${module.s3_logging.bucket_region}"
+ *   max_concurrency   = 5
+ *   max_errors        = 1
+ *   priority          = 1
+ *   s3_bucket_name    = module.s3_logging.bucket_id
+ *   s3_region         = module.s3_logging.bucket_region
+ *   service_role_arn  = "arn:aws:iam::${data.aws_caller_identity.current_account.account_id}:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM"
+ *   target_key        = "WindowTargetIds"
+ *   target_values     = [module.maint_window_target.maintenance_window_target_id]
+ *   task_arn          = "arn:aws:ssm:${data.aws_region.current_region.name}:507897595701:document/Rack-ConfigureAWSTimeSync"
+ *   task_type         = "RUN_COMMAND"
+ *   window_id         = module.maint_window_target.maintenance_window_id
+ *
+ *   task_invocation_run_comand_parameters = [
+ *     {
+ *       name   = "PreferredTimeClient"
+ *       values = ["chrony"]
+ *     },
+ *   ]
  * }
  * ```
  *
  * Full working references are available at [examples](examples)
+ *
+ * ## Terraform 0.12 upgrade
+ * Several changes were required while adding terraform 0.12 compatibility.  The following changes should
+ * made when upgrading from a previous release to version 0.12.0 or higher.
+ *
+ * ### Module variables
+ *
+ * The following module variables were updated to better meet current Rackspace style guides:
+ *
+ * - `resource_name` -> `name`
+ * - `task_parameters` -> `task_invocation_run_comand_parameters`
+ *
  */
 
 terraform {
