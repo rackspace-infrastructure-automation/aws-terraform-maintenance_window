@@ -41,16 +41,22 @@ terraform {
 }
 
 resource "aws_ssm_maintenance_window_task" "maintenance_window_task_with_logging" {
-  count            = var.enable_s3_logging ? 1 : 0
-  name             = var.name
+  count = var.enable_s3_logging ? 1 : 0
+
   description      = var.maintenance_window_description
-  max_errors       = var.max_errors
-  service_role_arn = var.service_role_arn
-  priority         = var.priority > 0 ? var.priority : null
-  task_type        = var.task_type
-  task_arn         = var.task_arn
-  window_id        = var.window_id
   max_concurrency  = var.max_concurrency
+  max_errors       = var.max_errors
+  name             = var.name
+  priority         = var.priority > 0 ? var.priority : null
+  service_role_arn = var.service_role_arn
+  task_arn         = var.task_arn
+  task_type        = var.task_type
+  window_id        = var.window_id
+
+  targets {
+    key    = var.target_key
+    values = var.target_values
+  }
 
   task_invocation_parameters {
     run_command_parameters {
@@ -68,24 +74,25 @@ resource "aws_ssm_maintenance_window_task" "maintenance_window_task_with_logging
       }
     }
   }
+}
+
+resource "aws_ssm_maintenance_window_task" "maintenance_window_task_no_logging" {
+  count = var.enable_s3_logging ? 0 : 1
+
+  description      = var.maintenance_window_description
+  max_concurrency  = var.max_concurrency
+  max_errors       = var.max_errors
+  name             = var.name
+  priority         = var.priority
+  service_role_arn = var.service_role_arn
+  task_arn         = var.task_arn
+  task_type        = var.task_type
+  window_id        = var.window_id
 
   targets {
     key    = var.target_key
     values = var.target_values
   }
-}
-
-resource "aws_ssm_maintenance_window_task" "maintenance_window_task_no_logging" {
-  count            = var.enable_s3_logging ? 0 : 1
-  name             = var.name
-  description      = var.maintenance_window_description
-  max_errors       = var.max_errors
-  service_role_arn = var.service_role_arn
-  priority         = var.priority
-  task_type        = var.task_type
-  task_arn         = var.task_arn
-  window_id        = var.window_id
-  max_concurrency  = var.max_concurrency
 
   task_invocation_parameters {
     run_command_parameters {
@@ -100,10 +107,5 @@ resource "aws_ssm_maintenance_window_task" "maintenance_window_task_no_logging" 
         }
       }
     }
-  }
-
-  targets {
-    key    = var.target_key
-    values = var.target_values
   }
 }
