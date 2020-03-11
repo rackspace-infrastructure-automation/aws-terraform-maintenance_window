@@ -24,7 +24,7 @@ variable "max_errors" {
 variable "priority" {
   description = "The priority of the task in the Maintenance Window. The lower the number, the higher the priority. Tasks that have the same priority are scheduled in parallel."
   default     = 0
-  type        = string
+  type        = number
 }
 
 variable "resource_name" {
@@ -56,10 +56,10 @@ variable "s3_region" {
   type        = string
 }
 
-variable "task_parameters" {
+variable "task_invocation_run_comand_parameters" {
   description = "The parameters to pass to the task when it's executed."
   default     = []
-  type        = list(string)
+  type        = list(object({ name = string, values = list(string) }))
 }
 
 variable "target_key" {
@@ -87,4 +87,3 @@ variable "window_id" {
   description = "The ID of the Maintenance Window where the task is registered. Format mw-xxxxxxxxxxxx"
   type        = string
 }
-
