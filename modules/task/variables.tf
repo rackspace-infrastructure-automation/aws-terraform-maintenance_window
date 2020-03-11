@@ -1,7 +1,7 @@
 variable "enable_s3_logging" {
   description = "Enable logging to s3 for the maintenance window task. true or false"
   default     = false
-  type        = string
+  type        = bool
 }
 
 variable "maintenance_window_description" {
@@ -12,13 +12,13 @@ variable "maintenance_window_description" {
 variable "max_concurrency" {
   description = "The maximum number of targets that you can run this task for, in parallel."
   default     = 5
-  type        = string
+  type        = number
 }
 
 variable "max_errors" {
   description = "The maximum number of errors allowed before this task stops being scheduled. Minimum length of 1. Maximum length of 7"
   default     = 1
-  type        = string
+  type        = number
 }
 
 variable "name" {
@@ -71,7 +71,7 @@ variable "task_arn" {
   type        = string
 }
 
-variable "task_invocation_run_comand_parameters" {
+variable "task_invocation_run_command_parameters" {
   description = "The parameters to pass to the task when it's executed."
   default     = []
   type        = list(object({ name = string, values = list(string) }))

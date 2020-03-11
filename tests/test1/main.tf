@@ -1,5 +1,5 @@
 provider "aws" {
-  version = "~> 2.2"
+  version = "~> 2.7"
   region  = "us-west-2"
 }
 
@@ -27,7 +27,7 @@ module "ar_test" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-ec2_autorecovery.git?ref=v0.12.4"
 
   ec2_os          = "centos7"
-  instance_count  = "1"
+  instance_count  = 1
   instance_type   = "t2.micro"
   name            = "MAINT_WINDOW_TEST-${random_string.r_string.result}"
   security_groups = [module.vpc.default_sg]
@@ -78,7 +78,7 @@ module "maintenance_window_task_1" {
   task_type                      = "RUN_COMMAND"
   window_id                      = module.maint_window_target.maintenance_window_id
 
-  task_invocation_run_comand_parameters = [
+  task_invocation_run_command_parameters = [
     {
       name   = "PreferredTimeClient"
       values = ["chrony"]
@@ -104,7 +104,7 @@ module "maintenance_window_task_2" {
   task_type                      = "RUN_COMMAND"
   window_id                      = module.maint_window_target.maintenance_window_id
 
-  task_invocation_run_comand_parameters = [
+  task_invocation_run_command_parameters = [
     {
       name   = "Packages"
       values = ["bind bind-utils"]

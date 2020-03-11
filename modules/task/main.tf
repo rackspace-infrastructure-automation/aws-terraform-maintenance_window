@@ -22,7 +22,7 @@
  *   task_type         = "RUN_COMMAND"
  *   window_id         = module.maint_window_target.maintenance_window_id
  *
- *   task_invocation_run_comand_parameters = [
+ *   task_invocation_run_command_parameters = [
  *     {
  *       name   = "PreferredTimeClient"
  *       values = ["chrony"]
@@ -50,7 +50,7 @@ terraform {
   required_version = ">= 0.12"
 
   required_providers {
-    aws = ">= 2.1.0"
+    aws = ">= 2.7.0"
   }
 }
 
@@ -79,7 +79,7 @@ resource "aws_ssm_maintenance_window_task" "maintenance_window_task_with_logging
       service_role_arn     = var.service_role_arn
 
       dynamic "parameter" {
-        for_each = var.task_invocation_run_comand_parameters
+        for_each = var.task_invocation_run_command_parameters
 
         content {
           name   = parameter.value.name
@@ -113,7 +113,7 @@ resource "aws_ssm_maintenance_window_task" "maintenance_window_task_no_logging" 
       service_role_arn = var.service_role_arn
 
       dynamic "parameter" {
-        for_each = var.task_invocation_run_comand_parameters
+        for_each = var.task_invocation_run_command_parameters
 
         content {
           name   = parameter.value.name

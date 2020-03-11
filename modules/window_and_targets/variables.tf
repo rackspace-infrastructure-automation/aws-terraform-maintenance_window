@@ -1,19 +1,19 @@
 variable "allow_unassociated_targets" {
   description = "Enables a Maintenance Window task to execute on managed instances, even if you haven't registered those instances as targets. If this is enabled, then you must specify the unregistered instances (by instance ID) when you register a task with the Maintenance Window."
   default     = false
-  type        = string
+  type        = bool
 }
 
 variable "cutoff" {
   description = "The number of hours before the end of the Maintenance Window that Systems Manager stops scheduling new tasks for execution."
   default     = 0
-  type        = string
+  type        = number
 }
 
 variable "duration" {
   description = "The schedule of the Maintenance Window in the form of a cron or rate expression."
   default     = 1
-  type        = string
+  type        = number
 }
 
 variable "name" {
@@ -48,4 +48,3 @@ variable "target_values" {
   description = "List of Physical Maintenance Window Target IDs or Instance IDs."
   type        = list(string)
 }
-

@@ -85,7 +85,7 @@ module "maintenance_window_task_1" {
   task_type         = "RUN_COMMAND"
   window_id         = module.maint_window_target.maintenance_window_id
 
-  task_invocation_run_comand_parameters = [
+  task_invocation_run_command_parameters = [
     {
       name   = "PreferredTimeClient"
       values = ["chrony"]
@@ -107,7 +107,7 @@ module "maintenance_window_task_2" {
   task_type         = "RUN_COMMAND"
   window_id         = module.maint_window_target.maintenance_window_id
 
-  task_invocation_run_comand_parameters = [
+  task_invocation_run_command_parameters = [
     {
       name   = "Packages"
       values = ["bind bind-utils"]

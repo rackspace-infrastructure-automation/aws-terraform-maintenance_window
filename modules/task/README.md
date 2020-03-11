@@ -21,7 +21,7 @@ module "maintenance_window_task_1" {
   task_type         = "RUN_COMMAND"
   window_id         = module.maint_window_target.maintenance_window_id
 
-  task_invocation_run_comand_parameters = [
+  task_invocation_run_command_parameters = [
     {
       name   = "PreferredTimeClient"
       values = ["chrony"]
@@ -47,16 +47,16 @@ The following module variables were updated to better meet current Rackspace sty
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.1.0 |
+| aws | >= 2.7.0 |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| enable\_s3\_logging | Enable logging to s3 for the maintenance window task. true or false | `string` | `false` | no |
+| enable\_s3\_logging | Enable logging to s3 for the maintenance window task. true or false | `bool` | `false` | no |
 | maintenance\_window\_description | Description for maintenance window | `string` | n/a | yes |
-| max\_concurrency | The maximum number of targets that you can run this task for, in parallel. | `string` | `5` | no |
-| max\_errors | The maximum number of errors allowed before this task stops being scheduled. Minimum length of 1. Maximum length of 7 | `string` | `1` | no |
+| max\_concurrency | The maximum number of targets that you can run this task for, in parallel. | `number` | `5` | no |
+| max\_errors | The maximum number of errors allowed before this task stops being scheduled. Minimum length of 1. Maximum length of 7 | `number` | `1` | no |
 | name | Name to be used for the resources to be provisioned | `string` | n/a | yes |
 | priority | The priority of the task in the Maintenance Window. The lower the number, the higher the priority. Tasks that have the same priority are scheduled in parallel. | `number` | `0` | no |
 | s3\_bucket\_name | Logging S3 Bucket Name | `string` | `""` | no |
@@ -66,7 +66,7 @@ The following module variables were updated to better meet current Rackspace sty
 | target\_key | The Maintenance Window Target ID from the maintenance window target template or InstanceIds | `string` | n/a | yes |
 | target\_values | Comma delimited list of Physical Maintenance Window Target IDs or Instance IDs. | `list(string)` | n/a | yes |
 | task\_arn | The ARN or Document resource that the task uses during execution. https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ssm-maintenancewindowtask.html#cfn-ssm-maintenancewindowtask-taskarn | `string` | n/a | yes |
-| task\_invocation\_run\_comand\_parameters | The parameters to pass to the task when it's executed. | `list(object({ name = string, values = list(string) }))` | `[]` | no |
+| task\_invocation\_run\_command\_parameters | The parameters to pass to the task when it's executed. | `list(object({ name = string, values = list(string) }))` | `[]` | no |
 | task\_type | The type of task. Only RUN\_COMMAND is supported by terraform at this point | `string` | `"RUN_COMMAND"` | no |
 | window\_id | The ID of the Maintenance Window where the task is registered. Format mw-xxxxxxxxxxxx | `string` | n/a | yes |
 
