@@ -21,21 +21,15 @@ variable "max_errors" {
   type        = string
 }
 
-variable "priority" {
-  description = "The priority of the task in the Maintenance Window. The lower the number, the higher the priority. Tasks that have the same priority are scheduled in parallel."
-  default     = 0
-  type        = number
-}
-
-variable "resource_name" {
+variable "name" {
   description = "Name to be used for the resources to be provisioned"
   type        = string
 }
 
-variable "service_role_arn" {
-  description = "The ARN of the role that's used when the task is executed."
-  default     = ""
-  type        = string
+variable "priority" {
+  description = "The priority of the task in the Maintenance Window. The lower the number, the higher the priority. Tasks that have the same priority are scheduled in parallel."
+  default     = 0
+  type        = number
 }
 
 variable "s3_bucket_name" {
@@ -56,10 +50,10 @@ variable "s3_region" {
   type        = string
 }
 
-variable "task_invocation_run_comand_parameters" {
-  description = "The parameters to pass to the task when it's executed."
-  default     = []
-  type        = list(object({ name = string, values = list(string) }))
+variable "service_role_arn" {
+  description = "The ARN of the role that's used when the task is executed."
+  default     = ""
+  type        = string
 }
 
 variable "target_key" {
@@ -75,6 +69,12 @@ variable "target_values" {
 variable "task_arn" {
   description = "The ARN or Document resource that the task uses during execution. https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ssm-maintenancewindowtask.html#cfn-ssm-maintenancewindowtask-taskarn"
   type        = string
+}
+
+variable "task_invocation_run_comand_parameters" {
+  description = "The parameters to pass to the task when it's executed."
+  default     = []
+  type        = list(object({ name = string, values = list(string) }))
 }
 
 variable "task_type" {

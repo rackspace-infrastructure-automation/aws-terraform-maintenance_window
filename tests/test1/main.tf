@@ -69,7 +69,7 @@ module "maint_window_target" {
 
 module "maintenance_window_task_1" {
   source                         = "../../module/modules/task"
-  resource_name                  = "Test_Maintenance_Window_1_${random_string.r_string.result}"
+  name                           = "Test_Maintenance_Window_1_${random_string.r_string.result}"
   maintenance_window_description = "Test Maintenance Window 1"
   max_errors                     = "1"
   service_role_arn               = "arn:aws:iam::${data.aws_caller_identity.current_account.account_id}:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM"
@@ -95,7 +95,7 @@ module "maintenance_window_task_1" {
 
 module "maintenance_window_task_2" {
   source                         = "../../module/modules/task"
-  resource_name                  = "Test_Maintenance_Window_2_${random_string.r_string.result}"
+  name                           = "Test_Maintenance_Window_2_${random_string.r_string.result}"
   maintenance_window_description = "Test Maintenance Window 2"
   max_errors                     = "1"
   service_role_arn               = "arn:aws:iam::${data.aws_caller_identity.current_account.account_id}:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM"
