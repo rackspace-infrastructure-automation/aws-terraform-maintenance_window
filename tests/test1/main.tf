@@ -23,21 +23,10 @@ data "aws_region" "current_region" {
 data "aws_caller_identity" "current_account" {
 }
 
-data "aws_ami" "amazon_centos_7" {
-  most_recent = true
-  owners      = ["679593333241"]
-
-  filter {
-    name   = "name"
-    values = ["CentOS Linux 7 x86_64 HVM EBS*"]
-  }
-}
-
 module "ar_test" {
   source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-ec2_autorecovery.git?ref=v0.12.4"
 
   ec2_os          = "centos7"
-  image_id        = data.aws_ami.amazon_centos_7.image_id
   instance_count  = "1"
   instance_type   = "t2.micro"
   name            = "MAINT_WINDOW_TEST-${random_string.r_string.result}"
